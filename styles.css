@@ -9,3 +9,71 @@
 
 /* Tema escuro com dourado e vermelho */
 .site-header{color:var(--ink)} .main-nav{color:var(--muted)} .nav-cta,.button-primary{background:var(--rose);color:#0d0d0d!important}.button-primary:hover{background:#d1ad55}.floating-note,.service-card{background:#1c1c1c;color:var(--ink)}.service-card.featured{background:var(--rose);color:#0d0d0d}.service-card.featured p,.service-card.featured a{color:#0d0d0d}.services-section{background:#15130f}.gallery{background:var(--cream)}.button-light{background:var(--rose);color:#0d0d0d}.contact-section{background:#080808}.contact-section h2{color:#f5efda}.site-footer{background:#050505}
+/* Services catalog */
+.services-grid{grid-template-columns:repeat(3,1fr)}
+.service-category{display:block;color:var(--rose-dark);font-size:9px;font-weight:700;letter-spacing:1.3px;text-transform:uppercase;margin-bottom:8px}
+.service-price{position:absolute;bottom:49px;color:var(--muted);font-size:10px}
+.featured .service-category,.featured .service-price{color:#fff8df}
+
+/* Combos e promoções */
+.combos-section{background:#11100d}
+.combos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
+.combo-card{min-height:270px;padding:28px 24px;background:#1c1c1c;border:1px solid var(--line);position:relative;transition:transform .2s,border-color .2s}
+.combo-card:hover{transform:translateY(-5px);border-color:var(--rose)}
+.combo-card-featured{background:var(--rose);color:#0d0d0d;border-color:var(--rose)}
+.combo-label{display:block;color:var(--rose);font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:36px}
+.combo-card-featured .combo-label{color:#0d0d0d}
+.combo-card h3{font-family:var(--serif);font-size:27px;line-height:1.05;margin-bottom:14px}
+.combo-card p{color:var(--muted);font-size:12px;line-height:1.5;max-width:240px}
+.combo-card-featured p{color:#241b0a}
+.combo-condition{position:absolute;bottom:52px;color:var(--rose);font-size:10px}
+.combo-card-featured .combo-condition{color:#241b0a}
+.combo-card a{position:absolute;bottom:25px;font-size:11px;font-weight:700;color:var(--ink)}
+.combo-card-featured a{color:#0d0d0d}
+.combo-card a span{margin-left:8px}
+@media(max-width:800px){.combos-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:470px){.combos-grid{grid-template-columns:1fr}}
+
+/* Agendamento */
+.booking-section{background:#15130f}
+.booking-grid{display:grid;grid-template-columns:1fr 1fr;gap:100px;align-items:center}
+.booking-intro{color:var(--muted);font-size:14px;max-width:390px}
+.booking-form{display:flex;flex-direction:column;gap:15px;padding:30px;background:#1c1c1c;border:1px solid var(--line)}
+.booking-form label{display:flex;flex-direction:column;gap:6px;color:var(--ink);font-size:11px;font-weight:700}
+.booking-form input,.booking-form select{width:100%;padding:12px 13px;border:1px solid #5c4922;border-radius:3px;background:#0d0d0d;color:var(--ink);font:inherit;font-size:12px}
+.booking-form input:focus,.booking-form select:focus{outline:1px solid var(--rose);border-color:var(--rose)}
+.booking-fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.booking-form button{border:0;cursor:pointer;justify-content:center;margin-top:5px}
+.booking-note{color:var(--muted);font-size:10px}
+@media(max-width:800px){.booking-grid{grid-template-columns:1fr;gap:45px}}
+@media(max-width:470px){.booking-fields{grid-template-columns:1fr}}
+
+/* Localização */
+.location-map{margin-top:70px;padding-top:35px;border-top:1px solid #5b4821}
+.map-heading{display:flex;align-items:end;justify-content:space-between;gap:25px;margin-bottom:22px}
+.map-heading h3{font-family:var(--serif);font-size:30px;margin:0;color:var(--ink)}
+.map-heading .eyebrow{margin-bottom:12px}
+.map-heading .button{margin-top:0;white-space:nowrap}
+.location-map iframe{display:block;width:100%;height:280px;border:1px solid #5b4821;border-radius:4px;filter:grayscale(.25) sepia(.15)}
+@media(max-width:470px){.map-heading{align-items:flex-start;flex-direction:column}.location-map{margin-top:50px}.location-map iframe{height:240px}}
+
+/* Visualização ampliada da galeria */
+.lightbox{display:none;position:fixed;inset:0;z-index:40;padding:24px;align-items:center;justify-content:center}
+.lightbox.open{display:flex}
+.lightbox-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.88)}
+.lightbox-dialog{position:relative;z-index:1;width:min(900px,100%);max-height:calc(100vh - 48px);padding:14px;background:#15130f;border:1px solid var(--line);box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.lightbox-dialog img{width:100%;height:min(70vh,620px);object-fit:contain;background:#0d0d0d}
+.lightbox-close{position:absolute;top:20px;right:20px;width:34px;height:34px;border:1px solid var(--rose);border-radius:50%;background:#0d0d0d;color:var(--ink);font-size:24px;line-height:1;cursor:pointer;z-index:2}
+.lightbox-footer{display:flex;justify-content:space-between;align-items:center;gap:18px;padding:16px 4px 2px}
+.lightbox-footer p{margin:0;color:var(--muted);font-size:11px}
+.lightbox-footer .text-link{white-space:nowrap}
+@media(max-width:470px){.lightbox{padding:12px}.lightbox-dialog{max-height:calc(100vh - 24px)}.lightbox-dialog img{height:62vh}.lightbox-footer{align-items:flex-start;flex-direction:column;gap:10px}}
+
+/* Limita o texto decorativo para evitar sobreposição no collage */
+.collage-script{right:0;max-width:125px;pointer-events:none}
+
+/* Evita que descrição, preço e ação se sobreponham nos cards */
+.service-card{min-height:315px;padding-bottom:78px}
+.service-card p{margin-bottom:0}
+@media(max-width:800px){.services-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:470px){.services-grid{grid-template-columns:1fr}}

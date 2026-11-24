@@ -8,7 +8,7 @@ function whatsappUrl(message = DEFAULT_WHATSAPP_MESSAGE) {
 }
 
 document.querySelectorAll('[data-whatsapp-link]').forEach((link) => {
-  link.href = whatsappUrl();
+  link.href = whatsappUrl(link.dataset.whatsappMessage || DEFAULT_WHATSAPP_MESSAGE);
 });
 
 // Menu responsivo

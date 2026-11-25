@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="description" content="Painel administrativo do SalãoEdmais." />
+    <title>Painel administrativo | SalãoEdmais</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="admin.css" />
+  </head>
+  <body class="admin-page">
+    <main class="admin-shell">
+      <header class="admin-header">
+        <a class="admin-brand" href="./index.html">
+          <img src="./logo.jpg" alt="" width="52" height="52" />
+          <span><strong>SalãoEdmais</strong><small>Painel administrativo</small></span>
+        </a>
+        <a class="admin-site-link" href="./index.html">Ver site ↗</a>
+      </header>
+
+      <section class="admin-panel" id="admin-login-panel">
+        <p class="eyebrow"><span class="eyebrow-line"></span> Acesso administrativo</p>
+        <h1>Entrar no painel</h1>
+        <p class="admin-intro">Use um token fino do GitHub com permissão <strong>Contents: read and write</strong> somente no repositório <strong>salao-edmais</strong>.</p>
+        <form id="github-login-form" class="admin-login-form">
+          <label for="github-token">Token fino do GitHub
+            <input id="github-token" name="token" type="password" autocomplete="off" spellcheck="false" required />
+          </label>
+          <button class="button button-primary" type="submit">Acessar dashboard</button>
+          <p class="admin-security-note">O token fica apenas na memória desta página durante a sessão. Não é gravado no repositório nem no navegador.</p>
+        </form>
+        <a class="admin-doc-link" href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener noreferrer">Criar token fino no GitHub ↗</a>
+        <p class="admin-status" id="login-status" role="status" aria-live="polite"></p>
+      </section>
+
+      <section class="admin-dashboard" id="admin-dashboard" hidden>
+        <div class="admin-dashboard-heading">
+          <div><p class="eyebrow"><span class="eyebrow-line"></span> Visão geral</p><h1>Dashboard</h1></div>
+          <button class="admin-logout" id="logout-button" type="button">Sair</button>
+        </div>
+
+        <div class="admin-stats" aria-label="Resumo do site">
+          <article class="admin-stat"><span>Serviços</span><strong>6</strong></article>
+          <article class="admin-stat"><span>Combos</span><strong>3</strong></article>
+          <article class="admin-stat"><span>Publicação</span><strong>main</strong></article>
+        </div>
+
+        <section class="admin-panel prices-panel">
+          <div class="prices-heading"><div><p class="eyebrow"><span class="eyebrow-line"></span> Catálogo</p><h2>Preços e combos</h2></div><p>Edite os valores e salve para criar um commit no GitHub.</p></div>
+          <form id="prices-form">
+            <div class="admin-price-groups" id="price-fields"></div>
+            <div class="admin-save-row">
+              <p class="admin-status" id="save-status" role="status" aria-live="polite">Nenhuma alteração pendente.</p>
+              <button class="button button-primary" id="save-prices-button" type="submit" disabled>Salvar e publicar preços</button>
+            </div>
+          </form>
+          <p class="admin-deploy-note">O commit altera apenas <code>precos.json</code> na branch <code>main</code>. O GitHub Pages publica os valores após concluir a atualização do site.</p>
+        </section>
+      </section>
+
+      <footer class="admin-footer">Área administrativa do SalãoEdmais</footer>
+    </main>
+    <script src="admin.js"></script>
+  </body>
+</html>

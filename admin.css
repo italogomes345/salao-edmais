@@ -1,0 +1,53 @@
+.admin-page{min-height:100vh;background:#10100e;color:var(--ink)}
+.admin-shell{width:min(1040px,calc(100% - 40px));margin:0 auto;padding:34px 0 24px}
+.admin-header,.admin-brand,.admin-dashboard-heading,.prices-heading,.admin-save-row{display:flex;align-items:center;justify-content:space-between;gap:20px}
+.admin-header{padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:42px}
+.admin-brand{justify-content:flex-start;color:var(--ink)}
+.admin-brand img{width:52px;height:52px;object-fit:cover;border-radius:50%}
+.admin-brand span{display:grid;gap:1px}
+.admin-brand strong{font-size:17px}
+.admin-brand small,.admin-site-link,.admin-intro,.admin-security-note,.admin-doc-link,.admin-status,.prices-heading>p,.admin-deploy-note,.admin-footer{font-size:12px}
+.admin-brand small,.admin-intro,.admin-security-note,.prices-heading>p,.admin-deploy-note,.admin-footer{color:var(--muted)}
+.admin-site-link,.admin-doc-link{color:var(--rose);font-weight:700}
+.admin-panel{max-width:760px;margin:0 auto;padding:34px;background:#1b1a17;border:1px solid var(--line);border-radius:5px}
+.admin-panel h1{font-size:clamp(32px,5vw,46px);margin:0 0 14px}
+.admin-intro{max-width:580px;margin-bottom:24px}
+.admin-login-form{display:grid;gap:16px}
+.admin-login-form label,.admin-price-field{display:grid;gap:7px;color:var(--ink);font-size:12px;font-weight:700}
+.admin-login-form input,.admin-price-field input,.admin-price-field textarea{width:100%;min-height:44px;padding:11px 13px;border:1px solid #5c4922;border-radius:3px;background:#0d0d0d;color:var(--ink);font:inherit;font-size:14px}
+.admin-price-field textarea{resize:vertical;line-height:1.5}
+.admin-login-form input:focus,.admin-price-field input:focus,.admin-price-field textarea:focus{outline:2px solid var(--rose);border-color:var(--rose)}
+.admin-login-form button{border:0;justify-content:center;cursor:pointer}
+.admin-login-form button:disabled,.admin-save-row button:disabled{opacity:.55;cursor:not-allowed}
+.admin-security-note{margin:0;line-height:1.6}
+.admin-doc-link{display:inline-block;margin-top:19px}
+.admin-status{min-height:18px;margin:12px 0 0;color:var(--muted)}
+.admin-status[data-state="error"]{color:#ffaaa3}
+.admin-status[data-state="success"]{color:#c7df9e}
+.admin-dashboard[hidden],.admin-panel[hidden]{display:none}
+.admin-dashboard-heading{margin-bottom:22px}
+.admin-dashboard-heading h1{font-size:clamp(34px,5vw,48px);margin:0}
+.admin-dashboard-heading .eyebrow,.prices-heading .eyebrow{margin-bottom:8px}
+.admin-logout{padding:10px 14px;border:1px solid var(--line);border-radius:3px;background:transparent;color:var(--ink);font:inherit;cursor:pointer}
+.admin-logout:hover{border-color:var(--rose);color:var(--rose)}
+.admin-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px}
+.admin-stat{display:grid;gap:8px;padding:18px 20px;background:#1b1a17;border:1px solid var(--line);border-radius:4px}
+.admin-stat span{font-size:11px;color:var(--muted)}
+.admin-stat strong{font-family:var(--serif);font-size:27px;color:var(--rose)}
+.prices-panel{max-width:none;padding:28px}
+.prices-heading{align-items:flex-end;margin-bottom:22px}
+.prices-heading h2{font-size:32px;margin:0}
+.prices-heading>p{max-width:310px;margin:0 0 4px}
+.admin-price-groups{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.admin-price-group{padding:18px;background:#11110f;border:1px solid var(--line);border-radius:4px}
+.admin-price-group h3{margin:0 0 16px;font-family:var(--serif);font-size:21px}
+.admin-price-fields{display:grid;gap:13px}
+.admin-price-field{font-size:11px}
+.admin-price-field input{min-height:40px;font-size:13px}
+.admin-save-row{align-items:flex-end;margin-top:22px}
+.admin-save-row .admin-status{margin:0;flex:1}
+.admin-save-row button{border:0;justify-content:center;cursor:pointer}
+.admin-deploy-note{margin:18px 0 0;line-height:1.6}
+.admin-deploy-note code{color:var(--rose);font-size:11px}
+.admin-footer{padding:25px 0 4px;text-align:center}
+@media(max-width:650px){.admin-shell{width:min(100% - 28px,560px);padding-top:20px}.admin-header{margin-bottom:28px}.admin-panel,.prices-panel{padding:22px 18px}.admin-stats{gap:8px}.admin-stat{padding:14px 12px}.admin-stat strong{font-size:23px}.admin-price-groups{grid-template-columns:1fr}.prices-heading{align-items:flex-start;flex-direction:column;gap:10px}.admin-save-row{align-items:stretch;flex-direction:column}.admin-save-row button{width:100%}}

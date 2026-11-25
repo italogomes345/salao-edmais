@@ -30,7 +30,7 @@
 .admin-dashboard-heading .eyebrow,.prices-heading .eyebrow{margin-bottom:8px}
 .admin-logout{padding:10px 14px;border:1px solid var(--line);border-radius:3px;background:transparent;color:var(--ink);font:inherit;cursor:pointer}
 .admin-logout:hover{border-color:var(--rose);color:var(--rose)}
-.admin-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px}
+.admin-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:20px}
 .admin-stat{display:grid;gap:8px;padding:18px 20px;background:#1b1a17;border:1px solid var(--line);border-radius:4px}
 .admin-stat span{font-size:11px;color:var(--muted)}
 .admin-stat strong{font-family:var(--serif);font-size:27px;color:var(--rose)}

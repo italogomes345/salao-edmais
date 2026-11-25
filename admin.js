@@ -76,7 +76,6 @@ const dashboard = document.querySelector('#admin-dashboard');
 const priceForm = document.querySelector('#prices-form');
 const priceFields = document.querySelector('#price-fields');
 const saveButton = document.querySelector('#save-prices-button');
-const exportButton = document.querySelector('#export-prices-button');
 const saveStatus = document.querySelector('#save-status');
 const logoutButton = document.querySelector('#logout-button');
 
@@ -170,7 +169,6 @@ loginForm.addEventListener('submit', async (event) => {
     buildPriceInputs(currentPrices);
     loginPanel.hidden = true;
     dashboard.hidden = false;
-    exportButton.disabled = false;
     setStatus(saveStatus, 'Preços carregados. Nenhuma alteração pendente.');
   } catch (error) {
     setStatus(loginStatus, error.message || 'Não foi possível carregar os preços.', 'error');
@@ -182,7 +180,6 @@ loginForm.addEventListener('submit', async (event) => {
 
 priceForm.addEventListener('input', () => {
   saveButton.disabled = false;
-  exportButton.disabled = false;
   setStatus(saveStatus, 'Há alterações sem salvar.');
 });
 
@@ -210,25 +207,9 @@ priceForm.addEventListener('submit', (event) => {
     currentPrices = readEditedPrices();
     localStorage.setItem(PRICES_STORAGE_KEY, JSON.stringify(currentPrices));
     saveButton.disabled = true;
-    setStatus(saveStatus, 'Salvo neste navegador. Baixe o arquivo para publicar para todos os visitantes.', 'success');
+    setStatus(saveStatus, 'Preços salvos.', 'success');
   } catch (error) {
     saveButton.disabled = false;
-    setStatus(saveStatus, error.message, 'error');
-  }
-});
-
-exportButton.addEventListener('click', () => {
-  try {
-    currentPrices = readEditedPrices();
-    const blob = new Blob([`${JSON.stringify(currentPrices, null, 2)}\n`], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const downloadLink = document.createElement('a');
-    downloadLink.href = url;
-    downloadLink.download = 'precos.json';
-    downloadLink.click();
-    URL.revokeObjectURL(url);
-    setStatus(saveStatus, 'Arquivo precos.json baixado. Substitua o arquivo no repositório para publicar.', 'success');
-  } catch (error) {
     setStatus(saveStatus, error.message, 'error');
   }
 });
@@ -238,7 +219,6 @@ logoutButton.addEventListener('click', () => {
   priceFields.replaceChildren();
   loginPanel.hidden = false;
   dashboard.hidden = true;
-  exportButton.disabled = true;
   saveButton.disabled = true;
   usernameInput.value = '';
   passwordInput.value = '';

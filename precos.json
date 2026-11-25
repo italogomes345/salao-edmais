@@ -1,0 +1,49 @@
+{
+  "services": {
+    "nails": {
+      "hand": 23,
+      "foot": 23,
+      "handsAndFeet": 45
+    },
+    "eyebrows": {
+      "withHenna": 40,
+      "withoutHenna": 20
+    },
+    "hair": {
+      "maleCut": 30,
+      "femaleCut": 55,
+      "progressiveFrom": 80,
+      "pregnancyBrushFrom": 150
+    },
+    "makeup": {
+      "from": 40
+    },
+    "depilation": {
+      "groin": 45,
+      "fullLeg": 32,
+      "halfLeg": 22,
+      "underarms": 17
+    }
+  },
+  "combos": {
+    "handsAndLook": {
+      "price": 75,
+      "savings": 10
+    },
+    "basicDepilation": {
+      "price": 44,
+      "savings": 5
+    },
+    "careDay": {
+      "price": 90,
+      "savings": 10
+    }
+  },
+  "paymentMethods": [
+    "Pix",
+    "Cartões físicos",
+    "Pagamentos por aproximação",
+    "Dinheiro",
+    "Vales-benefício"
+  ]
+}

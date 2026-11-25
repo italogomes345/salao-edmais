@@ -1,12 +1,6 @@
-const REPOSITORY_OWNER = 'italogomes345';
-const REPOSITORY_NAME = 'salao-edmais';
-const PUBLISH_BRANCH = 'main';
-const DATA_FILE_PATH = 'precos.json';
-const CONTENTS_API_URL = `https://api.github.com/repos/${REPOSITORY_OWNER}/${REPOSITORY_NAME}/contents/${DATA_FILE_PATH}`;
-const API_HEADERS = {
-  Accept: 'application/vnd.github+json',
-  'X-GitHub-Api-Version': '2022-11-28'
-};
+const ADMIN_USERNAME = 'admin';
+const ADMIN_PASSWORD = 'admin';
+const PRICES_STORAGE_KEY = 'salaoedmais-precos';
 
 const priceGroups = [
   {
@@ -35,9 +29,7 @@ const priceGroups = [
   },
   {
     title: 'Maquiagem',
-    fields: [
-      { path: ['services', 'makeup', 'from'], label: 'Preço inicial' }
-    ]
+    fields: [{ path: ['services', 'makeup', 'from'], label: 'Preço inicial' }]
   },
   {
     title: 'Depilação',
@@ -71,25 +63,23 @@ const priceGroups = [
   },
   {
     title: 'Formas de pagamento',
-    fields: [
-      { path: ['paymentMethods'], label: 'Separe as opções por vírgula', type: 'list' }
-    ]
+    fields: [{ path: ['paymentMethods'], label: 'Separe as opções por vírgula', type: 'list' }]
   }
 ];
 
+const loginForm = document.querySelector('#admin-login-form');
 const loginPanel = document.querySelector('#admin-login-panel');
-const loginForm = document.querySelector('#github-login-form');
-const tokenInput = document.querySelector('#github-token');
+const usernameInput = document.querySelector('#admin-username');
+const passwordInput = document.querySelector('#admin-password');
 const loginStatus = document.querySelector('#login-status');
 const dashboard = document.querySelector('#admin-dashboard');
 const priceForm = document.querySelector('#prices-form');
 const priceFields = document.querySelector('#price-fields');
 const saveButton = document.querySelector('#save-prices-button');
+const exportButton = document.querySelector('#export-prices-button');
 const saveStatus = document.querySelector('#save-status');
 const logoutButton = document.querySelector('#logout-button');
 
-let accessToken = '';
-let fileSha = '';
 let currentPrices = null;
 
 function setStatus(element, message, state = '') {
@@ -108,39 +98,13 @@ function setValueAtPath(object, path, value) {
   parent[lastKey] = value;
 }
 
-function bytesToBase64(text) {
-  const bytes = new TextEncoder().encode(text);
-  let binary = '';
-  bytes.forEach((byte) => { binary += String.fromCharCode(byte); });
-  return btoa(binary);
-}
+async function loadCurrentPrices() {
+  const savedInThisBrowser = localStorage.getItem(PRICES_STORAGE_KEY);
+  if (savedInThisBrowser) return JSON.parse(savedInThisBrowser);
 
-function base64ToText(content) {
-  const binary = atob(content.replace(/\s/g, ''));
-  const bytes = Uint8Array.from(binary, (character) => character.charCodeAt(0));
-  return new TextDecoder().decode(bytes);
-}
-
-function requestHeaders() {
-  return { ...API_HEADERS, Authorization: `Bearer ${accessToken}` };
-}
-
-async function getPriceFile() {
-  const response = await fetch(`${CONTENTS_API_URL}?ref=${PUBLISH_BRANCH}`, {
-    headers: requestHeaders()
-  });
-  const result = await response.json();
-  if (!response.ok) {
-    const detail = response.status === 401
-      ? 'Token inválido ou expirado.'
-      : response.status === 403
-        ? 'O token precisa de Contents: read and write no repositório salao-edmais.'
-        : response.status === 404
-          ? 'Arquivo não encontrado ou o token não tem acesso ao repositório.'
-          : result.message || `Erro do GitHub (${response.status}).`;
-    throw new Error(detail);
-  }
-  return result;
+  const response = await fetch('./precos.json', { cache: 'no-store' });
+  if (!response.ok) throw new Error('Não foi possível carregar precos.json.');
+  return response.json();
 }
 
 function buildPriceInputs(prices) {
@@ -168,7 +132,6 @@ function buildPriceInputs(prices) {
       if (field.type === 'list') {
         input.rows = 3;
         input.value = getValueAtPath(prices, field.path).join(', ');
-        input.setAttribute('aria-label', field.label);
       } else {
         input.type = 'number';
         input.min = '0';
@@ -189,25 +152,29 @@ function buildPriceInputs(prices) {
 
 loginForm.addEventListener('submit', async (event) => {
   event.preventDefault();
-  accessToken = tokenInput.value.trim();
-  tokenInput.value = '';
+  const validLogin = usernameInput.value.trim() === ADMIN_USERNAME
+    && passwordInput.value === ADMIN_PASSWORD;
+  passwordInput.value = '';
+
+  if (!validLogin) {
+    setStatus(loginStatus, 'Login ou senha incorretos.', 'error');
+    passwordInput.focus();
+    return;
+  }
+
   const submitButton = loginForm.querySelector('button[type="submit"]');
   submitButton.disabled = true;
-  setStatus(loginStatus, 'Validando token e carregando preços…');
-
+  setStatus(loginStatus, 'Carregando preços…');
   try {
-    const file = await getPriceFile();
-    const prices = JSON.parse(base64ToText(file.content));
-    fileSha = file.sha;
-    currentPrices = prices;
+    currentPrices = await loadCurrentPrices();
     buildPriceInputs(currentPrices);
     loginPanel.hidden = true;
     dashboard.hidden = false;
+    exportButton.disabled = false;
     setStatus(saveStatus, 'Preços carregados. Nenhuma alteração pendente.');
   } catch (error) {
-    accessToken = '';
-    setStatus(loginStatus, error.message || 'Não foi possível acessar o repositório.', 'error');
-    tokenInput.focus();
+    setStatus(loginStatus, error.message || 'Não foi possível carregar os preços.', 'error');
+    passwordInput.focus();
   } finally {
     submitButton.disabled = false;
   }
@@ -215,73 +182,67 @@ loginForm.addEventListener('submit', async (event) => {
 
 priceForm.addEventListener('input', () => {
   saveButton.disabled = false;
+  exportButton.disabled = false;
   setStatus(saveStatus, 'Há alterações sem salvar.');
 });
 
-priceForm.addEventListener('submit', async (event) => {
-  event.preventDefault();
+function readEditedPrices() {
   const updatedPrices = JSON.parse(JSON.stringify(currentPrices));
-
   for (const input of priceFields.querySelectorAll('[data-path]')) {
     const path = JSON.parse(input.dataset.path);
     if (input.tagName === 'TEXTAREA') {
       const methods = input.value.split(',').map((method) => method.trim()).filter(Boolean);
-      if (!methods.length) {
-        setStatus(saveStatus, 'Informe pelo menos uma forma de pagamento.', 'error');
-        input.focus();
-        return;
-      }
+      if (!methods.length) throw new Error('Informe pelo menos uma forma de pagamento.');
       setValueAtPath(updatedPrices, path, methods);
-    } else {
-      const amount = Number(input.value);
-      if (!Number.isFinite(amount) || amount < 0) {
-        setStatus(saveStatus, 'Confira os valores antes de salvar.', 'error');
-        input.focus();
-        return;
-      }
-      setValueAtPath(updatedPrices, path, amount);
+      continue;
     }
+
+    const amount = Number(input.value);
+    if (!Number.isFinite(amount) || amount < 0) throw new Error('Confira os valores antes de salvar.');
+    setValueAtPath(updatedPrices, path, amount);
   }
+  return updatedPrices;
+}
 
-  saveButton.disabled = true;
-  setStatus(saveStatus, 'Salvando preços na branch main…');
+priceForm.addEventListener('submit', (event) => {
+  event.preventDefault();
   try {
-    const response = await fetch(CONTENTS_API_URL, {
-      method: 'PUT',
-      headers: { ...requestHeaders(), 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        message: 'Atualiza preços pelo painel administrativo',
-        content: bytesToBase64(`${JSON.stringify(updatedPrices, null, 2)}\n`),
-        sha: fileSha,
-        branch: PUBLISH_BRANCH
-      })
-    });
-    const result = await response.json();
-    if (!response.ok) {
-      if (response.status === 409 || response.status === 422) {
-        throw new Error('O arquivo mudou desde que você abriu o painel. Saia, entre novamente e tente de novo.');
-      }
-      throw new Error(result.message || `O GitHub recusou a gravação (${response.status}).`);
-    }
-
-    currentPrices = updatedPrices;
-    fileSha = result.content.sha;
-    setStatus(saveStatus, `Salvo no commit ${result.commit.sha.slice(0, 7)}. O GitHub Pages atualizará o site após a publicação.`, 'success');
+    currentPrices = readEditedPrices();
+    localStorage.setItem(PRICES_STORAGE_KEY, JSON.stringify(currentPrices));
+    saveButton.disabled = true;
+    setStatus(saveStatus, 'Salvo neste navegador. Baixe o arquivo para publicar para todos os visitantes.', 'success');
   } catch (error) {
     saveButton.disabled = false;
-    setStatus(saveStatus, error.message || 'Não foi possível salvar os preços.', 'error');
+    setStatus(saveStatus, error.message, 'error');
+  }
+});
+
+exportButton.addEventListener('click', () => {
+  try {
+    currentPrices = readEditedPrices();
+    const blob = new Blob([`${JSON.stringify(currentPrices, null, 2)}\n`], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const downloadLink = document.createElement('a');
+    downloadLink.href = url;
+    downloadLink.download = 'precos.json';
+    downloadLink.click();
+    URL.revokeObjectURL(url);
+    setStatus(saveStatus, 'Arquivo precos.json baixado. Substitua o arquivo no repositório para publicar.', 'success');
+  } catch (error) {
+    setStatus(saveStatus, error.message, 'error');
   }
 });
 
 logoutButton.addEventListener('click', () => {
-  accessToken = '';
-  fileSha = '';
   currentPrices = null;
   priceFields.replaceChildren();
   loginPanel.hidden = false;
   dashboard.hidden = true;
+  exportButton.disabled = true;
+  saveButton.disabled = true;
+  usernameInput.value = '';
+  passwordInput.value = '';
   setStatus(loginStatus, '');
   setStatus(saveStatus, 'Nenhuma alteração pendente.');
-  saveButton.disabled = true;
-  tokenInput.focus();
+  usernameInput.focus();
 });

@@ -29,9 +29,13 @@ nav.querySelectorAll('a').forEach((link) => link.addEventListener('click', close
 // Os preços públicos são lidos do arquivo editável pelo painel administrativo.
 async function updateSitePrices() {
   try {
-    const response = await fetch('./precos.json', { cache: 'no-store' });
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    const data = await response.json();
+    const locallySavedPrices = localStorage.getItem('salaoedmais-precos');
+    let data = locallySavedPrices ? JSON.parse(locallySavedPrices) : null;
+    if (!data) {
+      const response = await fetch('./precos.json', { cache: 'no-store' });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      data = await response.json();
+    }
     const formatPrice = (value) => {
       const amount = Number(value);
       if (!Number.isFinite(amount) || amount < 0) throw new Error('Valor inválido em precos.json');

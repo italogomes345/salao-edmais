@@ -22,15 +22,17 @@
       <section class="admin-panel" id="admin-login-panel">
         <p class="eyebrow"><span class="eyebrow-line"></span> Acesso administrativo</p>
         <h1>Entrar no painel</h1>
-        <p class="admin-intro">Use um token fino do GitHub com permissão <strong>Contents: read and write</strong> somente no repositório <strong>salao-edmais</strong>.</p>
-        <form id="github-login-form" class="admin-login-form">
-          <label for="github-token">Token fino do GitHub
-            <input id="github-token" name="token" type="password" autocomplete="off" spellcheck="false" required />
+        <p class="admin-intro">Entre para editar preços, combos e formas de pagamento.</p>
+        <form id="admin-login-form" class="admin-login-form">
+          <label for="admin-username">Login
+            <input id="admin-username" name="username" type="text" autocomplete="username" required />
+          </label>
+          <label for="admin-password">Senha
+            <input id="admin-password" name="password" type="password" autocomplete="current-password" required />
           </label>
           <button class="button button-primary" type="submit">Acessar dashboard</button>
-          <p class="admin-security-note">O token fica apenas na memória desta página durante a sessão. Não é gravado no repositório nem no navegador.</p>
+          <p class="admin-security-note">Acesso estático: login e senha ficam visíveis no código do site. Não use este painel para dados privados.</p>
         </form>
-        <a class="admin-doc-link" href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener noreferrer">Criar token fino no GitHub ↗</a>
         <p class="admin-status" id="login-status" role="status" aria-live="polite"></p>
       </section>
 
@@ -43,19 +45,20 @@
         <div class="admin-stats" aria-label="Resumo do site">
           <article class="admin-stat"><span>Serviços</span><strong>6</strong></article>
           <article class="admin-stat"><span>Combos</span><strong>3</strong></article>
-          <article class="admin-stat"><span>Publicação</span><strong>main</strong></article>
+          <article class="admin-stat"><span>Armazenamento</span><strong>Neste navegador</strong></article>
         </div>
 
         <section class="admin-panel prices-panel">
-          <div class="prices-heading"><div><p class="eyebrow"><span class="eyebrow-line"></span> Catálogo</p><h2>Preços e combos</h2></div><p>Edite os valores e salve para criar um commit no GitHub.</p></div>
+          <div class="prices-heading"><div><p class="eyebrow"><span class="eyebrow-line"></span> Catálogo</p><h2>Preços e combos</h2></div><p>Edite os valores para este navegador ou baixe o arquivo para publicar no site.</p></div>
           <form id="prices-form">
             <div class="admin-price-groups" id="price-fields"></div>
             <div class="admin-save-row">
               <p class="admin-status" id="save-status" role="status" aria-live="polite">Nenhuma alteração pendente.</p>
-              <button class="button button-primary" id="save-prices-button" type="submit" disabled>Salvar e publicar preços</button>
+              <button class="button button-primary" id="save-prices-button" type="submit" disabled>Salvar neste navegador</button>
+              <button class="admin-export-button" id="export-prices-button" type="button" disabled>Baixar precos.json para publicar</button>
             </div>
           </form>
-          <p class="admin-deploy-note">O commit altera apenas <code>precos.json</code> na branch <code>main</code>. O GitHub Pages publica os valores após concluir a atualização do site.</p>
+          <p class="admin-deploy-note">Salvar aqui só altera este navegador. Para atualizar o site para todos, baixe o arquivo <code>precos.json</code>, substitua o arquivo de mesmo nome no repositório e publique a alteração no GitHub.</p>
         </section>
       </section>
 

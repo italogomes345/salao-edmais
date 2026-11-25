@@ -47,7 +47,11 @@
 .admin-save-row{align-items:flex-end;margin-top:22px}
 .admin-save-row .admin-status{margin:0;flex:1}
 .admin-save-row button{border:0;justify-content:center;cursor:pointer}
+.admin-export-button{padding:12px 16px;border:1px solid var(--rose);border-radius:3px;background:transparent;color:var(--rose);font:inherit;font-size:12px;font-weight:700;white-space:nowrap}
+.admin-export-button:hover{background:rgba(194,154,59,.12)}
+.admin-export-button:disabled{opacity:.55;cursor:not-allowed}
 .admin-deploy-note{margin:18px 0 0;line-height:1.6}
 .admin-deploy-note code{color:var(--rose);font-size:11px}
 .admin-footer{padding:25px 0 4px;text-align:center}
 @media(max-width:650px){.admin-shell{width:min(100% - 28px,560px);padding-top:20px}.admin-header{margin-bottom:28px}.admin-panel,.prices-panel{padding:22px 18px}.admin-stats{gap:8px}.admin-stat{padding:14px 12px}.admin-stat strong{font-size:23px}.admin-price-groups{grid-template-columns:1fr}.prices-heading{align-items:flex-start;flex-direction:column;gap:10px}.admin-save-row{align-items:stretch;flex-direction:column}.admin-save-row button{width:100%}}
+.admin-access-link{display:inline-block;padding:7px 10px;border:1px solid #9d7c2a;border-radius:3px;color:var(--rose);font-size:10px;font-weight:700;white-space:nowrap}

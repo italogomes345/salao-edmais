@@ -41,42 +41,61 @@ async function updateSitePrices() {
       if (!Number.isFinite(amount) || amount < 0) throw new Error('Valor inválido em precos.json');
       return `R$ ${amount.toLocaleString('pt-BR', { maximumFractionDigits: 2 })}`;
     };
-    const setLines = (selector, lines) => {
-      const element = document.querySelector(selector);
-      if (!element) return;
-      const nodes = lines.flatMap((line, index) => index
-        ? [document.createElement('br'), document.createTextNode(line)]
-        : [document.createTextNode(line)]);
-      element.replaceChildren(...nodes);
+    const setItems = (selector, items) => {
+      const list = document.querySelector(selector);
+      if (!list) return;
+      list.replaceChildren(...items.map(({ service, value, from = false }) => {
+        const item = document.createElement('li');
+        const serviceLabel = document.createElement('span');
+        serviceLabel.className = 'servico';
+        serviceLabel.textContent = service;
+        const price = document.createElement('span');
+        price.className = 'preco';
+        if (from) {
+          const note = document.createElement('small');
+          note.textContent = 'a partir de';
+          price.append(note, document.createTextNode(` ${formatPrice(value)}`));
+        } else {
+          price.textContent = typeof value === 'number' ? formatPrice(value) : value;
+        }
+        item.append(serviceLabel, price);
+        return item;
+      }));
     };
 
-    setLines('[data-price-id="nails"]', [
-      `Mão ${formatPrice(data.services.nails.hand)}`,
-      `Pé ${formatPrice(data.services.nails.foot)}`,
-      `Mão + pé ${formatPrice(data.services.nails.handsAndFeet)}`
+    setItems('[data-price-id="nails"]', [
+      { service: 'Mão', value: data.services.nails.hand },
+      { service: 'Pé', value: data.services.nails.foot },
+      { service: 'Mão + pé', value: data.services.nails.handsAndFeet }
     ]);
-    setLines('[data-price-id="eyebrows"]', [
-      `Com henna ou tinta: ${formatPrice(data.services.eyebrows.withHenna)}`,
-      `Sem henna: ${formatPrice(data.services.eyebrows.withoutHenna)}`
+    setItems('[data-price-id="eyebrows"]', [
+      { service: 'Com henna ou tinta:', value: data.services.eyebrows.withHenna },
+      { service: 'Sem henna:', value: data.services.eyebrows.withoutHenna }
     ]);
-    setLines('[data-price-id="hair"]', [
-      `Corte masculino: ${formatPrice(data.services.hair.maleCut)}`,
-      `Corte feminino: ${formatPrice(data.services.hair.femaleCut)}`,
-      `Progressiva: a partir de ${formatPrice(data.services.hair.progressiveFrom)}`,
-      `Escova de grávida: a partir de ${formatPrice(data.services.hair.pregnancyBrushFrom)}`,
-      'Progressiva e escova: valor varia conforme o tamanho e a quantidade de cabelo.'
+    setItems('[data-price-id="hair"]', [
+      { service: 'Corte masculino:', value: data.services.hair.maleCut },
+      { service: 'Corte feminino:', value: data.services.hair.femaleCut },
+      { service: 'Progressiva:', value: data.services.hair.progressiveFrom, from: true },
+      { service: 'Escova de grávida:', value: data.services.hair.pregnancyBrushFrom, from: true },
+      { service: 'Progressiva e escova:', value: 'valor varia conforme o tamanho e a quantidade de cabelo.' }
     ]);
-    setLines('[data-price-id="makeup"]', [`a partir de ${formatPrice(data.services.makeup.from)}`]);
-    setLines('[data-price-id="depilation"]', [
-      `Virilha: ${formatPrice(data.services.depilation.groin)}`,
-      `Perna inteira: ${formatPrice(data.services.depilation.fullLeg)}`,
-      `Meia perna: ${formatPrice(data.services.depilation.halfLeg)}`,
-      `Axilas: ${formatPrice(data.services.depilation.underarms)}`
+    setItems('[data-price-id="makeup"]', [
+      { service: '', value: data.services.makeup.from, from: true }
+    ]);
+    setItems('[data-price-id="depilation"]', [
+      { service: 'Virilha:', value: data.services.depilation.groin },
+      { service: 'Perna inteira:', value: data.services.depilation.fullLeg },
+      { service: 'Meia perna:', value: data.services.depilation.halfLeg },
+      { service: 'Axilas:', value: data.services.depilation.underarms }
     ]);
 
     for (const [id, combo] of Object.entries(data.combos)) {
       const element = document.querySelector(`[data-combo-price-id="${id}"]`);
-      if (element) element.textContent = `${formatPrice(combo.price)} · economize ${formatPrice(combo.savings)}`;
+      if (!element) continue;
+      const price = element.querySelector('.preco-atual');
+      const savings = element.querySelector('.economia');
+      if (price) price.textContent = formatPrice(combo.price);
+      if (savings) savings.textContent = `economize ${formatPrice(combo.savings)}`;
     }
     const paymentMethods = document.querySelector('[data-payment-methods]');
     if (paymentMethods && Array.isArray(data.paymentMethods)) {

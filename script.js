@@ -97,6 +97,123 @@ async function updateSitePrices() {
       if (price) price.textContent = formatPrice(combo.price);
       if (savings) savings.textContent = `economize ${formatPrice(combo.savings)}`;
     }
+
+    const hiddenServices = new Set(data.hiddenServices || []);
+    const serviceOptions = {
+      nails: 'Manicure e Pedicure',
+      eyebrows: 'Design de Sobrancelhas',
+      hair: 'Cortes e Progressivas',
+      makeup: 'Maquiagem',
+      depilation: 'Depilação',
+      products: 'Produtos Natura e Avon'
+    };
+    for (const [id, optionLabel] of Object.entries(serviceOptions)) {
+      if (!hiddenServices.has(id)) continue;
+      const priceList = document.querySelector(`[data-price-id="${id}"]`);
+      const serviceCard = priceList?.closest('.service-card')
+        || document.querySelector(`[data-service-id="${id}"]`);
+      if (serviceCard) serviceCard.hidden = true;
+      const option = [...document.querySelectorAll('#booking-service option')]
+        .find((entry) => entry.textContent === optionLabel);
+      option?.remove();
+    }
+
+    const hiddenCombos = new Set(data.hiddenCombos || []);
+    for (const id of hiddenCombos) {
+      const comboPrice = document.querySelector(`[data-combo-price-id="${id}"]`);
+      const comboCard = comboPrice?.closest('.combo-card');
+      if (comboCard) comboCard.hidden = true;
+    }
+
+    const servicesGrid = document.querySelector('.services-grid');
+    [...servicesGrid.children].filter((card) => !card.hidden).forEach((card, index) => {
+      const number = card.querySelector('.service-number');
+      if (number) number.textContent = String(index + 1).padStart(2, '0');
+    });
+    const bookingServiceSelect = document.querySelector('#booking-service');
+    (data.customServices || []).forEach((service) => {
+      if (bookingServiceSelect) {
+        const option = document.createElement('option');
+        option.textContent = service.name;
+        bookingServiceSelect.append(option);
+      }
+      const card = document.createElement('article');
+      card.className = 'service-card';
+      const number = document.createElement('div');
+      number.className = 'service-number';
+      const visibleServiceCount = [...servicesGrid.children].filter((child) => !child.hidden).length;
+      number.textContent = String(visibleServiceCount + 1).padStart(2, '0');
+      const icon = document.createElement('div');
+      icon.className = 'service-icon';
+      icon.textContent = '✧';
+      const category = document.createElement('small');
+      category.className = 'service-category';
+      category.textContent = service.category;
+      const title = document.createElement('h3');
+      title.textContent = service.name;
+      card.append(number, icon, category, title);
+      if (service.description) {
+        const description = document.createElement('p');
+        description.textContent = service.description;
+        card.append(description);
+      }
+      const prices = document.createElement('ul');
+      prices.className = 'precos';
+      const row = document.createElement('li');
+      const label = document.createElement('span');
+      label.className = 'servico';
+      label.textContent = 'Valor';
+      const price = document.createElement('span');
+      price.className = 'preco';
+      if (service.from) {
+        const note = document.createElement('small');
+        note.textContent = 'a partir de';
+        price.append(note, document.createTextNode(` ${formatPrice(service.price)}`));
+      } else {
+        price.textContent = formatPrice(service.price);
+      }
+      row.append(label, price);
+      prices.append(row);
+      card.append(prices);
+      const link = document.createElement('a');
+      const message = `Olá! Gostaria de agendar ${service.name} pelo SalãoEdmais.`;
+      link.href = whatsappUrl(message);
+      link.textContent = 'Agendar pelo WhatsApp';
+      link.setAttribute('aria-label', `Agendar ${service.name} pelo WhatsApp`);
+      card.append(link);
+      servicesGrid.append(card);
+    });
+
+    const combosGrid = document.querySelector('.combos-grid');
+    (data.customCombos || []).forEach((combo) => {
+      const card = document.createElement('article');
+      card.className = 'combo-card';
+      const label = document.createElement('span');
+      label.className = 'combo-label';
+      label.textContent = 'Combo adicional';
+      const title = document.createElement('h3');
+      title.textContent = combo.name;
+      const description = document.createElement('p');
+      description.textContent = combo.description;
+      const priceBadge = document.createElement('span');
+      priceBadge.className = 'combo-condition';
+      const price = document.createElement('span');
+      price.className = 'preco-atual';
+      price.textContent = formatPrice(combo.price);
+      priceBadge.append(price);
+      if (Number(combo.savings) > 0) {
+        const savings = document.createElement('small');
+        savings.className = 'economia';
+        savings.textContent = `economize ${formatPrice(combo.savings)}`;
+        priceBadge.append(savings);
+      }
+      const link = document.createElement('a');
+      link.href = whatsappUrl(`Olá! Gostaria de agendar o combo ${combo.name} pelo SalãoEdmais.`);
+      link.textContent = 'Agendar pelo WhatsApp';
+      card.append(label, title, description, priceBadge, link);
+      combosGrid.append(card);
+    });
+
     const paymentMethods = document.querySelector('[data-payment-methods]');
     if (paymentMethods && Array.isArray(data.paymentMethods)) {
       paymentMethods.textContent = `Pagamento: ${data.paymentMethods.join(', ')}. Valores sujeitos a alteração.`;

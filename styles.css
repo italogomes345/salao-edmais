@@ -12,8 +12,9 @@
 /* Services catalog */
 .services-grid{grid-template-columns:repeat(3,1fr)}
 .service-category{display:block;color:var(--rose-dark);font-size:9px;font-weight:700;letter-spacing:1.3px;text-transform:uppercase;margin-bottom:8px}
-.service-price{position:absolute;bottom:49px;color:var(--muted);font-size:10px}
-.featured .service-category,.featured .service-price{color:#fff8df}
+
+.featured .service-category{color:#fff8df}
+.service-price{position:static;margin-top:auto;padding-top:14px;line-height:1.6;font-size:13px;font-weight:700;color:var(--rose);letter-spacing:.1px}
 
 /* Combos e promoções */
 .combos-section{background:#11100d}
@@ -26,8 +27,6 @@
 .combo-card h3{font-family:var(--serif);font-size:27px;line-height:1.05;margin-bottom:14px}
 .combo-card p{color:var(--muted);font-size:12px;line-height:1.5;max-width:240px}
 .combo-card-featured p{color:#241b0a}
-.combo-condition{position:absolute;bottom:52px;color:var(--rose);font-size:10px}
-.combo-card-featured .combo-condition{color:#241b0a}
 .combo-card a{position:absolute;bottom:25px;font-size:11px;font-weight:700;color:var(--ink)}
 .combo-card-featured a{color:#0d0d0d}
 .combo-card a span{margin-left:8px}
@@ -76,8 +75,6 @@
 .service-card{min-height:315px;padding-bottom:78px}
 .service-card p{margin-bottom:0}
 .service-card{display:flex;flex-direction:column;align-items:flex-start;padding-bottom:25px}
-.service-price{position:static;margin-top:auto;padding-top:14px;line-height:1.6;font-size:13px;font-weight:700;color:var(--rose);letter-spacing:.1px}
-.featured .service-price{color:#fff}
 .service-card a{position:static;margin-top:13px}
 @media(max-width:800px){.services-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:470px){.services-grid{grid-template-columns:1fr}}
@@ -91,3 +88,16 @@
 .floating-social-link:hover{transform:translateY(-3px);background:#252119}
 .floating-social-link:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
 @media(max-width:470px){.floating-social-links{right:14px;bottom:calc(18px + env(safe-area-inset-bottom));gap:8px}.floating-social-link{width:44px;height:44px}}
+
+/* Preços em pílula */
+:root{--preco-claro:#f4df9b;--preco-escuro:#241b0a;--preco-forte:#755710}
+.precos{display:grid;gap:10px;width:100%;margin:auto 0 0;padding:14px 0 0;list-style:none}
+.precos li{display:flex;align-items:center;min-width:0;gap:0}
+.servico{display:flex;flex:1;align-items:center;min-width:0;overflow-wrap:anywhere}
+.servico::after{content:"";flex:1;min-width:8px;margin:0 8px;border-bottom:1px dotted currentColor;opacity:.3}
+.preco{display:inline-flex;align-items:center;flex-shrink:0;gap:0;padding:5px 12px;border-radius:10px;background:var(--preco-claro);color:var(--preco-escuro);font-size:13px;font-weight:700;line-height:1.35;white-space:nowrap}
+.preco small{margin-right:5px;font-size:.72em;font-weight:400}
+.precos[data-price-id="hair"] li:last-child .preco{max-width:60%;white-space:normal;text-align:right;overflow-wrap:anywhere}
+.combo-condition{position:absolute;right:24px;bottom:52px;display:inline-flex;align-items:center;gap:8px;max-width:calc(100% - 48px);padding:8px 16px;border-radius:14px;background:var(--preco-forte);color:#fff;font-size:1.25em;font-weight:700;line-height:1.25;white-space:nowrap}
+.economia{padding:3px 7px;border-radius:999px;background:var(--preco-claro);color:var(--preco-escuro);font-size:.55em;font-weight:600}
+@media(max-width:360px){.combo-condition{right:16px;max-width:calc(100% - 32px);padding:8px 10px;gap:5px;font-size:1.05em}.economia{padding:3px 5px}}

@@ -41,12 +41,32 @@
 .admin-price-groups{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
 .admin-price-group{padding:18px;background:#11110f;border:1px solid var(--line);border-radius:4px}
 .admin-price-group h3{margin:0 0 16px;font-family:var(--serif);font-size:21px}
+.admin-price-group-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:16px}
+.admin-price-group-heading h3{flex:1;margin:0;overflow-wrap:anywhere}
+.admin-delete-button{display:grid;flex:0 0 40px;place-items:center;width:40px;height:40px;padding:8px;border:1px solid var(--line);border-radius:4px;background:transparent;color:var(--muted);cursor:pointer}
+.admin-delete-button svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.7}
+.admin-delete-button:hover{border-color:#c04a43;color:#ffaaa3}
+.admin-delete-button:focus-visible{outline:2px solid var(--rose);outline-offset:2px}
 .admin-price-fields{display:grid;gap:13px}
 .admin-price-field{font-size:11px}
 .admin-price-field input{min-height:40px;font-size:13px}
 .admin-save-row{align-items:flex-end;margin-top:22px}
 .admin-save-row .admin-status{margin:0;flex:1}
 .admin-save-row button{border:0;justify-content:center;cursor:pointer}
+.admin-add-options{display:flex;justify-content:flex-end;gap:10px;margin-top:14px}
+.admin-add-button,.admin-cancel-button{min-height:42px;padding:10px 14px;border:1px solid var(--rose);border-radius:3px;background:transparent;color:var(--rose);font:inherit;font-size:12px;font-weight:700;cursor:pointer}
+.admin-add-button:hover,.admin-cancel-button:hover{background:rgba(194,154,59,.12)}
+.admin-new-item-form{margin-top:18px;padding:20px;background:#11110f;border:1px solid var(--line);border-radius:4px}
+.admin-new-item-form[hidden]{display:none}
+.admin-new-item-form h3{margin:0 0 16px;font-family:var(--serif);font-size:21px}
+.admin-new-item-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.admin-field-wide{grid-column:1/-1}
+.admin-checkbox-field{display:flex;align-items:center;gap:9px;align-self:end;min-height:40px;color:var(--ink);font-size:12px}
+.admin-checkbox-field input{width:18px;height:18px;accent-color:var(--rose)}
+.admin-new-item-actions{display:flex;align-items:center;gap:10px;margin-top:17px}
+.admin-new-item-actions .button{justify-content:center;border:0;cursor:pointer}
+.admin-new-item-form .admin-status{margin-bottom:0}
+.admin-price-field input[type="checkbox"]{width:18px;min-height:18px;padding:0;accent-color:var(--rose)}
 .admin-footer{padding:25px 0 4px;text-align:center}
-@media(max-width:650px){.admin-shell{width:min(100% - 28px,560px);padding-top:20px}.admin-header{margin-bottom:28px}.admin-panel,.prices-panel{padding:22px 18px}.admin-stats{gap:8px}.admin-stat{padding:14px 12px}.admin-stat strong{font-size:23px}.admin-price-groups{grid-template-columns:1fr}.prices-heading{align-items:flex-start;flex-direction:column;gap:10px}.admin-save-row{align-items:stretch;flex-direction:column}.admin-save-row button{width:100%}}
+@media(max-width:650px){.admin-shell{width:min(100% - 28px,560px);padding-top:20px}.admin-header{margin-bottom:28px}.admin-panel,.prices-panel{padding:22px 18px}.admin-stats{gap:8px}.admin-stat{padding:14px 12px}.admin-stat strong{font-size:23px}.admin-price-groups{grid-template-columns:1fr}.prices-heading{align-items:flex-start;flex-direction:column;gap:10px}.admin-save-row{align-items:stretch;flex-direction:column}.admin-save-row button{width:100%}.admin-add-options{align-items:stretch;flex-direction:column}.admin-add-button{width:100%}.admin-new-item-fields{grid-template-columns:1fr}.admin-field-wide{grid-column:auto}.admin-new-item-actions{align-items:stretch;flex-direction:column}.admin-new-item-actions>*{width:100%}}
 .admin-access-link{display:inline-block;padding:7px 10px;border:1px solid #9d7c2a;border-radius:3px;color:var(--rose);font-size:10px;font-weight:700;white-space:nowrap}
